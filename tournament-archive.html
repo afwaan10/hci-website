@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Tournament Archive | HCI</title>
+
+<style>
+:root{
+  --bg:#050505;
+  --card:#141414;
+  --gold:#f3d58b;
+  --red:#d4a64f;
+  --text:#fff;
+  --muted:#c8c8c8;
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  scroll-behavior:smooth;
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  scroll-behavior:smooth;
+  -webkit-tap-highlight-color: transparent;
+}
+
+a,
+button,
+summary,
+details,
+.card,
+.archiveCard,
+.partnerCard,
+.sponsorToggle{
+  -webkit-tap-highlight-color: transparent;
+}
+
+a:focus,
+button:focus,
+summary:focus,
+details:focus{
+  outline: none;
+  box-shadow: none;
+}
+
+body{
+  font-family:Arial,sans-serif;
+  background:radial-gradient(circle at top left,#3a2a12,#050505 45%);
+  color:var(--text);
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+.wrap{
+  width:min(1120px,92%);
+  margin:auto;
+}
+
+.nav{
+  min-height:72px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+  border-bottom:1px solid #ffffff1a;
+}
+
+.logo{
+  font-weight:900;
+  color:var(--gold);
+  letter-spacing:1px;
+}
+
+.backBtn{
+  padding:11px 15px;
+  border-radius:99px;
+  background:#ffffff10;
+  border:1px solid #ffffff22;
+  color:#fff;
+  font-weight:800;
+}
+
+.backBtn:hover{
+  background:#d4a64f26;
+}
+
+.hero{
+  padding:80px 0 55px;
+}
+
+.eyebrow{
+  color:var(--gold);
+  font-weight:900;
+  letter-spacing:2px;
+  font-size:12px;
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+
+h1{
+  font-size:clamp(38px,8vw,72px);
+  line-height:.95;
+  text-transform:uppercase;
+  letter-spacing:-2px;
+}
+
+.red{
+  color:var(--red);
+}
+
+p{
+  color:var(--muted);
+  line-height:1.7;
+  margin-top:14px;
+}
+
+.archiveGrid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
+  padding-bottom:80px;
+}
+
+.archiveCard{
+  min-height:240px;
+  padding:22px;
+  border-radius:24px;
+  background:linear-gradient(135deg,#d4a64f2b,#ffffff0c);
+  border:1px solid #ffffff1f;
+  box-shadow:0 18px 50px #0006;
+  display:flex;
+  flex-direction:column;
+  justify-content:end;
+}
+
+.archiveCard span{
+  color:var(--gold);
+  font-size:12px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:1.5px;
+}
+
+.archiveCard h3{
+  margin-top:8px;
+  font-size:24px;
+}
+
+.archiveCard p{
+  font-size:14px;
+}
+
+.status{
+  display:inline-block;
+  margin-top:14px;
+  padding:8px 11px;
+  border-radius:99px;
+  background:#0006;
+  border:1px solid #ffffff1f;
+  color:var(--gold);
+  font-size:12px;
+  font-weight:900;
+  width:max-content;
+}
+
+.archiveActions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:16px;
+}
+
+.archiveBtn{
+  display:inline-block;
+  padding:10px 13px;
+  border-radius:99px;
+  background:linear-gradient(135deg,#f3d58b,#8a6424);
+  color:#050505;
+  font-size:12px;
+  font-weight:900;
+  border:1px solid #ffffff22;
+}
+
+.archiveBtn:hover{
+  filter:brightness(1.08);
+}
+
+.archiveBtn.secondary{
+  background:#0006;
+  color:#fff;
+}
+
+footer{
+  padding:25px 0;
+  border-top:1px solid #ffffff1a;
+  color:var(--muted);
+  font-size:13px;
+}
+
+@media(max-width:850px){
+  .archiveGrid{
+    grid-template-columns:1fr;
+  }
+
+  .nav{
+    padding:14px 0;
+    align-items:flex-start;
+    flex-direction:column;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header class="wrap nav">
+  <div class="logo">HCI TOURNAMENT ARCHIVE</div>
+  <a class="backBtn" href="index.html">Back to Home</a>
+</header>
+
+<main class="wrap">
+
+  <section class="hero">
+    <p class="eyebrow">HCI Documentation Archive</p>
+    <h1>
+      Tournament <span class="red">Archive</span>
+    </h1>
+    <p>
+      A dedicated archive page for HCI tournament history, event progress,
+      and upcoming competitive programs in the Honor of Kings Indonesia community.
+    </p>
+  </section>
+
+  <section class="archiveGrid">
+
+    <div class="archiveCard completedCard">
+  <span>Completed Event</span>
+  <h3>HCT FASTOUR</h3>
+      <p>
+        Community tournament program by HCI as part of building early
+        competitive activity for Honor of Kings players.
+      </p>
+
+      <div class="archiveActions">
+  <a class="archiveBtn" href="hct-fastour.html">View History</a>
+  <span class="archiveBtn secondary">Completed</span>
+</div>
+    </div>
+
+    <div class="archiveCard completedCard">
+  <span>Completed Event</span>
+  <h3>HCT LEAGUE</h3>
+      <p>
+        League-style tournament program focused on giving teams a more
+        structured competitive experience.
+      </p>
+
+      <div class="archiveActions">
+  <a class="archiveBtn" href="hct-league.html">View History</a>
+  <span class="archiveBtn secondary">Completed</span>
+</div>
+    </div>
+
+    <div class="archiveCard completedCard">
+  <span>In Progress</span>
+  <h3>HCT SEA CLASH</h3>
+      <p>
+        Regional community tournament concept connecting Honor of Kings
+        competitive communities across Southeast Asia.
+      </p>
+<div class="archiveActions">
+  <a class="archiveBtn" href="hct-sea-clash.html">View Details</a>
+  <span class="archiveBtn secondary">In Progress</span>
+</div>
+</div>
+    </div>
+
+    <div class="archiveCard comingCard">
+  <span>In Preparation</span>
+  <h3>HCT DIVISION LEAGUE S1</h3>
+      <p>
+        A long-term competitive league project designed to support the growth
+        of the Honor of Kings Indonesia esports ecosystem through Division 1
+        and Division 2 competition.
+      </p>
+
+      <div class="archiveActions">
+  <a class="archiveBtn" href="hct-division-league-s1.html">View Details</a>
+  <span class="archiveBtn secondary">In Preparation</span>
+</div>
+    </div>
+
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    © 2026 HOK Community Indonesia. Tournament Archive.
+  </div>
+</footer>
+
+</body>
+</html>
