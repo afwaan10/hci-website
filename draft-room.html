@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HCI Draft Room</title>
+  <meta name="description" content="HCI Draft Room - simulasi ban-pick Honor of Kings real-time untuk coach dan analis." />
+  <link rel="stylesheet" href="css/draft-room.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <header class="hero-header">
+      <div class="brand-block">
+        <div class="brand-mark">HCI</div>
+        <div>
+          <p class="eyebrow">Honor of Kings Community Indonesia</p>
+          <h1>HCI Draft Room</h1>
+          <p class="subtitle">Simulasi ban-pick real-time untuk coach, analis, dan latihan draft tim komunitas.</p>
+        </div>
+      </div>
+      <div class="status-pill" id="connectionStatus">Menghubungkan Firebase...</div>
+    </header>
+
+    <section class="panel setup-panel" id="setupPanel">
+      <div>
+        <h2>Masuk Draft Room</h2>
+        <p>Buat room baru atau masuk menggunakan Room ID. Jika halaman ter-refresh, sesi lokal akan hilang dan room lama tidak bisa dikontrol ulang.</p>
+      </div>
+
+      <div class="setup-grid">
+        <div class="card soft-card">
+          <h3>Buat Room Baru</h3>
+          <p>Host otomatis menjadi Team A. Bagikan Room ID ke lawan.</p>
+          <button class="primary-btn" id="createRoomBtn" disabled>Create Room</button>
+        </div>
+
+        <div class="card soft-card">
+          <h3>Join Room</h3>
+          <p>Masukkan Room ID dari host.</p>
+          <div class="join-row">
+            <input id="roomIdInput" type="text" placeholder="Contoh: HCI-4821" autocomplete="off" />
+            <button class="secondary-btn" id="joinRoomBtn" disabled>Join</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="notice warning" id="firebaseNotice" hidden>
+        Firebase belum dikonfigurasi. Edit file <strong>js/firebase-config.js</strong> dulu agar fitur room real-time bisa jalan.
+      </div>
+    </section>
+
+    <section class="room-layout" id="roomPanel" hidden>
+      <aside class="panel room-sidebar">
+        <div class="room-meta">
+          <span class="eyebrow">Room ID</span>
+          <div class="room-code-row">
+            <strong id="roomCodeDisplay">-</strong>
+            <button class="tiny-btn" id="copyRoomBtn">Copy</button>
+          </div>
+        </div>
+
+        <div class="room-meta">
+          <span class="eyebrow">Status</span>
+          <strong id="roomStatusDisplay">Lobby</strong>
+        </div>
+
+        <div class="side-picker" id="sidePicker">
+          <button class="side-btn" data-side="A">Masuk Team A</button>
+          <button class="side-btn" data-side="B">Masuk Team B</button>
+          <button class="side-btn ghost" data-side="SPECTATOR">Spectator</button>
+        </div>
+
+        <div class="current-turn-card">
+          <span class="eyebrow">Giliran Sekarang</span>
+          <h2 id="currentTurnText">Menunggu draft dimulai</h2>
+          <p id="currentTurnHelp">Host dapat memulai draft setelah Team B masuk.</p>
+          <div class="timer-wrap">
+            <div class="timer-value" id="timerValue">--</div>
+            <div class="timer-label">timer visual</div>
+          </div>
+        </div>
+
+        <div class="action-stack">
+          <button class="primary-btn" id="startDraftBtn" hidden>Mulai Draft</button>
+          <button class="secondary-btn" id="copyResultBtn" hidden>Copy Result</button>
+          <button class="danger-btn" id="deleteRoomBtn" hidden>Hapus Room</button>
+          <button class="ghost-btn" id="leaveRoomBtn">Keluar Tampilan</button>
+        </div>
+
+        <div class="notice compact">
+          <strong>Catatan MVP:</strong> refresh halaman = sesi hilang. Buat room baru jika host/slot tim terkunci.
+        </div>
+      </aside>
+
+      <section class="draft-stage">
+        <div class="teams-grid">
+          <div class="team-card team-a">
+            <div class="team-head">
+              <div>
+                <span class="eyebrow">Blue Side</span>
+                <h2>Team A</h2>
+              </div>
+              <span class="team-state" id="teamAState">Kosong</span>
+            </div>
+            <div class="slot-section">
+              <h3>Ban</h3>
+              <div class="slot-grid ban-grid" id="teamABans"></div>
+            </div>
+            <div class="slot-section">
+              <h3>Pick</h3>
+              <div class="slot-grid pick-grid" id="teamAPicks"></div>
+            </div>
+          </div>
+
+          <div class="team-card team-b">
+            <div class="team-head">
+              <div>
+                <span class="eyebrow">Red Side</span>
+                <h2>Team B</h2>
+              </div>
+              <span class="team-state" id="teamBState">Kosong</span>
+            </div>
+            <div class="slot-section">
+              <h3>Ban</h3>
+              <div class="slot-grid ban-grid" id="teamBBans"></div>
+            </div>
+            <div class="slot-section">
+              <h3>Pick</h3>
+              <div class="slot-grid pick-grid" id="teamBPicks"></div>
+            </div>
+          </div>
+        </div>
+
+        <section class="panel draft-result-panel" id="draftResultPanel" hidden>
+  <div class="result-header">
+    <div>
+      <span class="eyebrow">Draft Result</span>
+      <h2 id="resultGameTitle">Game 1 Draft Result</h2>
+    </div>
+    <p>Hasil draft otomatis muncul setelah ban-pick selesai.</p>
+  </div>
+
+  <div class="result-board">
+    <div class="result-team result-team-a">
+      <div class="result-team-head">
+        <span class="eyebrow">Blue Side</span>
+        <h3>Team A</h3>
+      </div>
+
+      <div class="result-block">
+        <h4>Ban</h4>
+        <div class="result-ban-row" id="resultABans"></div>
+      </div>
+
+      <div class="result-block">
+        <h4>Pick</h4>
+        <div class="result-pick-column" id="resultAPicks"></div>
+      </div>
+    </div>
+
+    <div class="result-team result-team-b">
+      <div class="result-team-head">
+        <span class="eyebrow">Red Side</span>
+        <h3>Team B</h3>
+      </div>
+
+      <div class="result-block">
+        <h4>Ban</h4>
+        <div class="result-ban-row" id="resultBBans"></div>
+      </div>
+
+      <div class="result-block">
+        <h4>Pick</h4>
+        <div class="result-pick-column" id="resultBPicks"></div>
+      </div>
+    </div>
+  </div>
+</section>
+        
+        <div class="panel heroes-panel">
+          <div class="heroes-toolbar">
+            <div>
+              <span class="eyebrow">Hero Database</span>
+              <h2>Pilih Hero</h2>
+            </div>
+            <div class="toolbar-actions">
+              <input id="heroSearch" type="search" placeholder="Cari hero..." />
+              <select id="laneFilter">
+                <option value="ALL">Semua Lane</option>
+                <option value="Clash Lane">Clash Lane</option>
+                <option value="Jungle">Jungle</option>
+                <option value="Mid">Mid</option>
+                <option value="Farm">Farm</option>
+                <option value="Roam">Roam</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="draft-sequence" id="draftSequence"></div>
+          <div class="hero-grid" id="heroGrid"></div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/heroes.js"></script>
+  <script src="js/draft-room.js"></script>
+</body>
+</html>
